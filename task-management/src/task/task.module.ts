@@ -15,9 +15,14 @@ import { Paginator } from 'src/utils/paginator';
     ClientsModule.register([
       {
         name: 'USER_SERVICE',
-        transport: Transport.TCP,
+        transport: Transport.RMQ,
         options: {
-          port: 8001,
+          urls: ['amqp://localhost:5672'],
+          queue: 'users_queue',
+          queueOptions: {
+            durable: false,
+          },
+          // port: 8001,
           //   urls: ['amqp://localhost:5672'],
           //   queue: 'user_queue',
         },
