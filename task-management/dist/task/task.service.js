@@ -19,18 +19,32 @@ const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const task_entity_1 = require("./entities/task.entity");
 const schedule_1 = require("@nestjs/schedule");
+const paginator_1 = require("../utils/paginator");
 let TaskService = class TaskService {
-    constructor(userClient, taskRepository) {
+    constructor(userClient, taskRepository, paginator) {
         this.userClient = userClient;
         this.taskRepository = taskRepository;
+        this.paginator = paginator;
     }
     async create(createTaskDto) {
         const task = await this.taskRepository.save(createTaskDto);
         this.userClient.send('sendNotification', task).toPromise();
         return task;
     }
-    async findAll() {
-        return await this.taskRepository.find();
+    async findAll(req_page, req_limit) {
+        console.log(req_page);
+        const page = Number(req_page) || 1;
+        const limit = Number(req_limit) || 10;
+        const builder = this.taskRepository
+            .createQueryBuilder('task')
+            .orderBy('created_at', 'DESC');
+        const paginatedQuery = this.paginator.paginator(builder, page, limit);
+        const items = await paginatedQuery.getMany();
+        return {
+            data: items,
+            page,
+            limit,
+        };
     }
     async findOne(id) {
         const task = await this.taskRepository.findOne({
@@ -84,6 +98,7 @@ exports.TaskService = TaskService = __decorate([
     __param(0, (0, common_1.Inject)('USER_SERVICE')),
     __param(1, (0, typeorm_1.InjectRepository)(task_entity_1.Task)),
     __metadata("design:paramtypes", [microservices_1.ClientProxy,
-        typeorm_2.Repository])
+        typeorm_2.Repository,
+        paginator_1.Paginator])
 ], TaskService);
 //# sourceMappingURL=task.service.js.map

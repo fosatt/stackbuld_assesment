@@ -7,6 +7,7 @@ import { TaskController } from './task.controller';
 import { Project } from 'src/project/entities/project.entity';
 import { Task } from './entities/task.entity';
 import { ProjectService } from 'src/project/project.service';
+import { Paginator } from 'src/utils/paginator';
 
 @Module({
   imports: [
@@ -14,19 +15,17 @@ import { ProjectService } from 'src/project/project.service';
     ClientsModule.register([
       {
         name: 'USER_SERVICE',
-        transport: Transport.RMQ,
+        transport: Transport.TCP,
         options: {
-          urls: ['amqp://localhost:5672'],
-          queue: 'users_queue',
-          queueOptions: {
-            durable: false,
-          },
+          port: 8001,
+          //   urls: ['amqp://localhost:5672'],
+          //   queue: 'user_queue',
         },
       },
     ]),
     ScheduleModule.forRoot(),
   ],
   controllers: [TaskController],
-  providers: [TaskService, ProjectService],
+  providers: [TaskService, ProjectService, Paginator],
 })
 export class TaskModule {}

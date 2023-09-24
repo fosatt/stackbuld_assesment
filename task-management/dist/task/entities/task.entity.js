@@ -53,7 +53,7 @@ __decorate([
     __metadata("design:type", Date)
 ], Task.prototype, "dueDate", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'timestamp', default: new Date() }),
+    (0, typeorm_1.Column)({ name: 'created_at', type: 'timestamp', default: new Date() }),
     __metadata("design:type", Date)
 ], Task.prototype, "createdAt", void 0);
 exports.Task = Task = __decorate([

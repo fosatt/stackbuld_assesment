@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
   UseInterceptors,
 } from '@nestjs/common';
 import { TaskService } from './task.service';
@@ -30,8 +31,8 @@ export class TaskController {
   @UseInterceptors(CacheInterceptor)
   @CacheTTL(7200)
   @CacheKey(`tasks`)
-  findAll() {
-    return this.taskService.findAll();
+  findAll(@Query('page') page: number, @Query('limit') limit: number) {
+    return this.taskService.findAll(page, limit);
   }
 
   @Get(':id')

@@ -16,6 +16,7 @@ const task_controller_1 = require("./task.controller");
 const project_entity_1 = require("../project/entities/project.entity");
 const task_entity_1 = require("./entities/task.entity");
 const project_service_1 = require("../project/project.service");
+const paginator_1 = require("../utils/paginator");
 let TaskModule = class TaskModule {
 };
 exports.TaskModule = TaskModule;
@@ -26,20 +27,16 @@ exports.TaskModule = TaskModule = __decorate([
             microservices_1.ClientsModule.register([
                 {
                     name: 'USER_SERVICE',
-                    transport: microservices_1.Transport.RMQ,
+                    transport: microservices_1.Transport.TCP,
                     options: {
-                        urls: ['amqp://localhost:5672'],
-                        queue: 'users_queue',
-                        queueOptions: {
-                            durable: false,
-                        },
+                        port: 8001,
                     },
                 },
             ]),
             schedule_1.ScheduleModule.forRoot(),
         ],
         controllers: [task_controller_1.TaskController],
-        providers: [task_service_1.TaskService, project_service_1.ProjectService],
+        providers: [task_service_1.TaskService, project_service_1.ProjectService, paginator_1.Paginator],
     })
 ], TaskModule);
 //# sourceMappingURL=task.module.js.map

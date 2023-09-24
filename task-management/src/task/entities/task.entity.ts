@@ -39,6 +39,6 @@ export class Task {
   @Column({ type: 'timestamp', default: new Date() })
   dueDate: Date;
 
-  @Column({ type: 'timestamp', default: new Date() })
+  @Column({ name: 'created_at', type: 'timestamp', default: new Date() })
   createdAt: Date;
 }

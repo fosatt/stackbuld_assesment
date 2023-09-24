@@ -6,6 +6,7 @@ import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { Task } from './entities/task.entity';
 import { Cron } from '@nestjs/schedule';
+import { Paginator } from 'src/utils/paginator';
 
 @Injectable()
 export class TaskService {
@@ -14,6 +15,7 @@ export class TaskService {
     private readonly userClient: ClientProxy,
     @InjectRepository(Task)
     private readonly taskRepository: Repository<Task>,
+    private readonly paginator: Paginator,
   ) {}
 
   async create(createTaskDto: CreateTaskDto) {
@@ -22,8 +24,22 @@ export class TaskService {
     return task;
   }
 
-  async findAll() {
-    return await this.taskRepository.find();
+  async findAll(req_page, req_limit) {
+    console.log(req_page);
+    const page = Number(req_page) || 1;
+    const limit = Number(req_limit) || 10;
+
+    const builder = this.taskRepository
+      .createQueryBuilder('task')
+      .orderBy('created_at', 'DESC');
+    const paginatedQuery = this.paginator.paginator(builder, page, limit);
+    const items = await paginatedQuery.getMany();
+
+    return {
+      data: items,
+      page,
+      limit,
+    };
   }
 
   async findOne(id: number) {

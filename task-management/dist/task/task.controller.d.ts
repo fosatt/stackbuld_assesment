@@ -7,7 +7,11 @@ export declare class TaskController {
     private readonly projectService;
     constructor(taskService: TaskService, projectService: ProjectService);
     create(createTaskDto: CreateTaskDto): Promise<CreateTaskDto & import("./entities/task.entity").Task>;
-    findAll(): Promise<import("./entities/task.entity").Task[]>;
+    findAll(page: number, limit: number): Promise<{
+        data: import("./entities/task.entity").Task[];
+        page: number;
+        limit: number;
+    }>;
     findOne(id: string): Promise<import("./entities/task.entity").Task>;
     update(id: string, updateTaskDto: UpdateTaskDto): string;
     remove(id: string): string;

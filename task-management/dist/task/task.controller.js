@@ -27,8 +27,8 @@ let TaskController = class TaskController {
     create(createTaskDto) {
         return this.taskService.create(createTaskDto);
     }
-    findAll() {
-        return this.taskService.findAll();
+    findAll(page, limit) {
+        return this.taskService.findAll(page, limit);
     }
     findOne(id) {
         return this.taskService.findOne(+id);
@@ -53,12 +53,16 @@ __decorate([
     (0, common_1.UseInterceptors)(cache_manager_1.CacheInterceptor),
     (0, cache_manager_1.CacheTTL)(7200),
     (0, cache_manager_1.CacheKey)(`tasks`),
+    __param(0, (0, common_1.Query)('page')),
+    __param(1, (0, common_1.Query)('limit')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [Number, Number]),
     __metadata("design:returntype", void 0)
 ], TaskController.prototype, "findAll", null);
 __decorate([
     (0, common_1.Get)(':id'),
+    (0, common_1.UseInterceptors)(cache_manager_1.CacheInterceptor),
+    (0, cache_manager_1.CacheTTL)(7200),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
