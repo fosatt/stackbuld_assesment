@@ -95,8 +95,8 @@ export class UserService {
 
   async sendMailMessage(task, user, project): Promise<any> {
     const mailjet = new Client({
-      apiKey: '0e36647041797e3c10ea9a527027bec2',
-      apiSecret: '4ebbd0c0f891cb673a9f5e4a350b1b52',
+      apiKey: process.env.MAILJET_PUBLIC_KEY,
+      apiSecret: process.env.MAILJET_SECRET_KEY,
     });
     const data: SendEmailV3_1.Body = {
       Messages: [
@@ -106,7 +106,7 @@ export class UserService {
           },
           To: [
             {
-              Email: 'faloduntolulope@gmail.com',
+              Email: user.email,
             },
           ],
           Subject: `Task Assignment - ${task.title}`,
