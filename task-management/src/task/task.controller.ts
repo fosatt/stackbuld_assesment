@@ -12,7 +12,7 @@ import {
 import { TaskService } from './task.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
-import { CacheInterceptor, CacheKey, CacheTTL } from '@nestjs/cache-manager';
+import { CacheInterceptor, CacheKey } from '@nestjs/cache-manager';
 import { ProjectService } from 'src/project/project.service';
 
 @Controller('task')
@@ -29,7 +29,6 @@ export class TaskController {
 
   @Get()
   @UseInterceptors(CacheInterceptor)
-  @CacheTTL(7200)
   @CacheKey(`tasks`)
   findAll(@Query('page') page: number, @Query('limit') limit: number) {
     return this.taskService.findAll(page, limit);
@@ -37,7 +36,6 @@ export class TaskController {
 
   @Get(':id')
   @UseInterceptors(CacheInterceptor)
-  @CacheTTL(7200)
   findOne(@Param('id') id: string) {
     return this.taskService.findOne(+id);
   }

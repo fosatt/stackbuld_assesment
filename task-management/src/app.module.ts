@@ -16,7 +16,7 @@ import { Project } from './project/entities/project.entity';
       store: redisStore,
       host: 'localhost', // Redis host
       port: 6379, // Redis port
-      ttl: 7200, // Time-to-live for cached items (in seconds)
+      ttl: 60, // Time-to-live for cached items (in seconds)
       isGlobal: true,
     }),
     TypeOrmModule.forRoot({
